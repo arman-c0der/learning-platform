@@ -1,26 +1,312 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* =========================
+   Tailwind Custom Variant
+========================= */
+
+@custom-variant dark (&:is(.dark *));
+
+
+/* =========================
+   Theme
+========================= */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-geist-mono);
+    --font-heading: var(--font-sans);
+
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+/* =========================
+   Light Theme
+========================= */
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+
+    --destructive: oklch(0.577 0.245 27.325);
+
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+
+    --radius: 0.625rem;
+
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+/* =========================
+   Dark Theme
+========================= */
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+
+    --destructive: oklch(0.704 0.191 22.216);
+
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+
+    --ring: oklch(0.556 0 0);
+
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+
+/* =========================
+   Base Styles
+========================= */
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    html {
+        @apply font-sans;
+    }
+}
+
+
+/* =========================================================
+   HOME PAGE
+   ========================================================= */
+
+
+/* =========================
+   Hero Section
+========================= */
+
+.hero-section {
+    @apply space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32;
+}
+
+.hero-container {
+    @apply container relative isolate flex max-w-[64rem] flex-col items-center gap-4 text-center;
+}
+
+.hero-gradient-wrapper {
+    @apply pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80;
+}
+
+.hero-gradient {
+    @apply relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem]
+        -translate-x-1/2 rotate-[30deg]
+        bg-gradient-to-tr from-[#ff80b5] to-[#9089fc]
+        opacity-30
+        sm:left-[calc(50%-30rem)] sm:w-[72.1875rem];
+}
+
+.welcome-badge {
+    @apply rounded-2xl border bg-muted px-4 py-1.5 text-sm font-medium shadow-lg;
+}
+
+.hero-title {
+    @apply font-heading text-3xl font-bold sm:text-5xl md:text-6xl lg:text-7xl;
+}
+
+.hero-description {
+    @apply max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8;
+}
+
+.hero-actions {
+    @apply flex flex-wrap items-center justify-center gap-3;
+}
+
+
+/* =========================
+   Common Content Sections
+========================= */
+
+.content-section {
+    @apply container mx-auto space-y-6 py-8 md:py-12 lg:py-24;
+}
+
+.section-header {
+    @apply flex items-center justify-between;
+}
+
+.browse-link {
+    @apply flex items-center gap-1 text-sm font-medium hover:opacity-80;
+}
+
+
+/* =========================
+   Categories
+   (auto-fit stops a lopsided empty column when there are
+   only 1-3 categories; the fixed 220px card width keeps
+   cards from stretching awkwardly wide either)
+========================= */
+
+.categories-grid {
+    @apply grid grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-4;
+    grid-template-columns: repeat(auto-fit, minmax(0, 220px));
+    justify-content: center;
+}
+
+.category-card {
+    @apply relative flex flex-col items-center gap-4 rounded-xl border
+        bg-background p-6
+        transition-all duration-200
+        hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-md;
+}
+
+.category-content {
+    @apply flex flex-col items-center gap-4;
+}
+
+.category-icon-wrap {
+    @apply flex h-24 w-24 items-center justify-center rounded-full
+        bg-muted/70 transition-colors duration-200
+        group-hover:bg-muted;
+}
+
+.category-title {
+    @apply text-center font-semibold capitalize;
+}
+
+
+/* =========================
+   Courses
+========================= */
+
+.courses-grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    justify-content: center;
+}
+
+.courses-grid > * {
+    @apply transition-all duration-200 ease-out;
+}
+
+.courses-grid > *:hover {
+    @apply -translate-y-1 shadow-lg;
 }
