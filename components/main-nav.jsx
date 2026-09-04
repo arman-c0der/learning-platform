@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { MobileNav } from "@/components/mobile-nav";
-import { Logo } from "./logo";
+import {Logo} from "@/components/logo";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { Command } from "lucide-react";
@@ -55,7 +55,7 @@ export function MainNav({ items, children }) {
         <>
             <div className="flex gap-6 lg:gap-10">
                 <Link href="/">
-                    <Logo />
+                   <Logo/>
                 </Link>
                 {items?.length ? (
                     <nav className="hidden gap-6 lg:flex">
