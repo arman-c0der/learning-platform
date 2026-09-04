@@ -1,5 +1,7 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
+import fs from "fs/promises";
+import path from "path";
 
 import { getCourseDetails } from "@/queries/courses";
 import { getLoggedInUser } from "@/lib/loggedin-user";
@@ -7,24 +9,10 @@ import { getAReport } from "@/queries/reports";
 
 import { formatMyDate } from "@/lib/date";
 
-// Fetch custom fonts
-const kalamFontUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/fonts/kalam/Kalam-Regular.ttf`;
-const kalamFontBytes = await fetch(kalamFontUrl).then((res) =>
-  res.arrayBuffer()
-);
-
-
-
-const montserratItalicFontUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/fonts/montserrat/Montserrat-Italic.ttf`;
-const montserratItalicFontBytes = await fetch(montserratItalicFontUrl).then(
-  (res) => res.arrayBuffer()
-);
-
-const montserratFontUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/fonts/montserrat/Montserrat-Medium.ttf`;
-const montserratFontBytes = await fetch(montserratFontUrl).then((res) =>
-  res.arrayBuffer()
-);
-
+// Helper to read files from /public
+function publicPath(relativePath) {
+  return path.join(process.cwd(), "public", relativePath);
+}
 
 export async function GET(request) {
   try {
@@ -52,7 +40,10 @@ export async function GET(request) {
       sign: "/sign.png",
     };
 
-  
+    // Fetch custom fonts (now reading from local filesystem)
+    const kalamFontBytes = await fs.readFile(publicPath("fonts/kalam/Kalam-Regular.ttf"));
+    const montserratItalicFontBytes = await fs.readFile(publicPath("fonts/montserrat/Montserrat-Italic.ttf"));
+    const montserratFontBytes = await fs.readFile(publicPath("fonts/montserrat/Montserrat-Medium.ttf"));
 
     const pdfDoc = await PDFDocument.create();
     pdfDoc.registerFontkit(fontkit);
@@ -71,8 +62,7 @@ export async function GET(request) {
      * Logo
      *
      *-------------------*/
-    const logoUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`;
-    const logoBytes = await fetch(logoUrl).then((res) => res.arrayBuffer());
+    const logoBytes = await fs.readFile(publicPath("logo.png"));
     const logo = await pdfDoc.embedPng(logoBytes);
     const logoDimns = logo.scale(0.5);
     page.drawImage(logo, {
@@ -90,7 +80,6 @@ export async function GET(request) {
 
     const titleFontSize = 30;
     const titleText = "Certificate Of Completion";
-    // title text width
     const titleTextWidth = montserrat.widthOfTextAtSize(
       titleText,
       titleFontSize
@@ -112,7 +101,6 @@ export async function GET(request) {
     const nameLabelText = "This certificate is hereby bestowed upon";
 
     const nameLabelFontSize = 20;
-    // title text width
     const nameLabelTextWidth = montserratItalic.widthOfTextAtSize(
       nameLabelText,
       nameLabelFontSize
@@ -134,7 +122,6 @@ export async function GET(request) {
     const nameText = completionInfo.name;
 
     const nameFontSize = 40;
-    // title text width
     const nameTextWidth = timesRomanFont.widthOfTextAtSize(
       nameText,
       nameFontSize
@@ -156,7 +143,6 @@ export async function GET(request) {
     const detailsText = `This is to certify that ${completionInfo.name} successfully completed the ${completionInfo.courseName} course on ${completionInfo.completionDate} by ${completionInfo.instructor}`;
 
     const detailsFontSize = 16;
-    // title text width
     const detailsTextWidth = montserrat.widthOfTextAtSize(
       titleText,
       titleFontSize
@@ -200,9 +186,7 @@ export async function GET(request) {
       color: rgb(0, 0, 0),
     });
 
-    const signUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${completionInfo.sign}`;
-
-    const signBytes = await fetch(signUrl).then((res) => res.arrayBuffer());
+    const signBytes = await fs.readFile(publicPath(completionInfo.sign));
     const sign = await pdfDoc.embedPng(signBytes);
 
     page.drawImage(sign, {
@@ -213,11 +197,7 @@ export async function GET(request) {
     });
 
     // pattern
-    const patternUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pattern.jpg`;
-
-    const patternBytes = await fetch(patternUrl).then((res) =>
-      res.arrayBuffer()
-    );
+    const patternBytes = await fs.readFile(publicPath("pattern.jpg"));
     const pattern = await pdfDoc.embedJpg(patternBytes);
 
     page.drawImage(pattern, {
@@ -237,6 +217,7 @@ export async function GET(request) {
       headers: { "content-type": "application/pdf" },
     });
   } catch (error) {
-    (error);
+    console.error(error);
+    return new Response("Error generating certificate", { status: 500 });
   }
 }
