@@ -1,13 +1,14 @@
+
 import { SectionTitle } from "@/components/section-title";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { getCategories } from "@/queries/categories";
 import { getCourseList } from "@/queries/courses";
 import CourseCard from "./courses/_components/CourseCard";
+import HeroSection from "@/components/Hero-section";
 
 const HomePage = async () => {
     const courses = await getCourseList();
@@ -16,50 +17,7 @@ const HomePage = async () => {
     return (
         <>
             {/* Hero Section */}
-            <section className="hero-section">
-                <div className="hero-container">
-                    <div
-                        aria-hidden="true"
-                        className="hero-gradient-wrapper"
-                    >
-                        <div className="hero-gradient" />
-                    </div>
-
-                    <span className="welcome-badge">
-                        Hey, Welcome
-                    </span>
-
-                    <h1 className="hero-title">
-                        Learn Today, Lead Tomorrow.
-                    </h1>
-
-                    <p className="hero-description">
-                        You don&apos;t understand anything until you learn it
-                        more than one way.
-                    </p>
-
-                    <div className="hero-actions">
-                        <Link
-                            href="/courses"
-                            className={cn(buttonVariants({ size: "lg" }))}
-                        >
-                            Explore Now
-                        </Link>
-
-                        <Link
-                            href="/register/instructor"
-                            className={cn(
-                                buttonVariants({
-                                    variant: "outline",
-                                    size: "lg",
-                                })
-                            )}
-                        >
-                            Become An Instructor
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <HeroSection />
 
             {/* Categories Section */}
             <section id="categories" className="content-section">
@@ -123,3 +81,4 @@ const HomePage = async () => {
 };
 
 export default HomePage;
+

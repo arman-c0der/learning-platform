@@ -135,8 +135,7 @@ export async function addQuizAssessment(courseId, quizSetId, answers) {
             obj.attempted = !!found;
 
             const mergedOptions = quiz.options.map((o) => {
-                // quizId এবং option text দুটোই মিলিয়ে দেখা হচ্ছে,
-                // যাতে ভিন্ন কুইজের একই টেক্সটের অপশন ভুলভাবে ম্যাচ না হয়
+              
                 const selectedMatch = answers.find(
                     (a) =>
                         a.quizId === quiz.id &&
