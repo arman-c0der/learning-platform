@@ -19,13 +19,13 @@ function Menu({ loggedInUser }) {
 	return (
 		<ul className="list-none sidebar-nav mb-0 mt-3" id="navmenu-nav">
 			{menu.map((item, i) => (
-				<li className="navbar-item account-menu" key={i}>
+				<li className="navbar-item account-menu " key={i}>
 					<Link
 						href={item.href}
 						className={`navbar-link flex items-center py-2 rounded ${
 							pathname === item.href ? "text-primary" : "text-slate-400"
 						}`}>
-						<h6 className="mb-0 font-semibold">{item?.label}</h6>
+						<h6 className="mb-0 font-semibold text-amber-50">{item?.label}</h6>
 					</Link>
 				</li>
 			))}

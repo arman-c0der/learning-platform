@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { formatMyDate } from "@/lib/date";
+
 export const columns = [
   {
     id: "name",
@@ -11,6 +12,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() =>
             column.toggleSorting(column.getIsSorted() === "asc")
           }
@@ -20,6 +22,9 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("name")}</div>
+    ),
   },
 
   {
@@ -28,6 +33,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() =>
             column.toggleSorting(column.getIsSorted() === "asc")
           }
@@ -37,6 +43,9 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("studentEmail")}</div>
+    ),
   },
 
   {
@@ -45,6 +54,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() =>
             column.toggleSorting(column.getIsSorted() === "asc")
           }
@@ -54,6 +64,9 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("quizMark")}</div>
+    ),
   },
 
   {
@@ -62,6 +75,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() =>
             column.toggleSorting(column.getIsSorted() === "asc")
           }
@@ -71,6 +85,9 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("progress")}</div>
+    ),
   },
 
   {
@@ -79,6 +96,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() =>
             column.toggleSorting(column.getIsSorted() === "asc")
           }
@@ -91,9 +109,10 @@ export const columns = [
 
     cell: ({ row }) => {
       const enrollmentDate = row.getValue("enrollment_date");
-   
 
-      return formatMyDate(enrollmentDate);
+      return (
+        <div className="text-purple-100">{formatMyDate(enrollmentDate)}</div>
+      );
     },
   },
 ];

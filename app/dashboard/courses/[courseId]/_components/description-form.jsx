@@ -53,15 +53,19 @@ export const DescriptionForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         Course Description
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button
+          variant="ghost"
+          onClick={toggleEdit}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit Description
             </>
           )}
@@ -70,8 +74,8 @@ export const DescriptionForm = ({ initialData, courseId }) => {
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.description && "text-slate-500 italic"
+            "mt-2 text-sm text-purple-200",
+            !initialData.description && "italic text-purple-300/50"
           )}
         >
           {initialData.description || "No description"}
@@ -81,7 +85,7 @@ export const DescriptionForm = ({ initialData, courseId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -92,6 +96,7 @@ export const DescriptionForm = ({ initialData, courseId }) => {
                     <Textarea
                       disabled={isSubmitting}
                       placeholder="e.g. 'This course is about...'"
+                      className="border-purple-900/50 bg-[#0a0512] text-purple-100 placeholder:text-purple-300/40 focus-visible:ring-purple-600 focus-visible:ring-offset-0"
                       {...field}
                     />
                   </FormControl>
@@ -100,7 +105,11 @@ export const DescriptionForm = ({ initialData, courseId }) => {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                className="bg-purple-600 text-white hover:bg-purple-500"
+              >
                 Save
               </Button>
             </div>

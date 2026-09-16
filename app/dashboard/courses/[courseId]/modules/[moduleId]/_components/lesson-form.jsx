@@ -28,19 +28,8 @@ import { reOrderLesson } from "@/app/actions/lesson";
 const formSchema = z.object({
   title: z.string().min(1),
 });
-const initialLessons = [
-  {
-    id: "1",
-    title: "Module 1",
-    active: true,
-  },
-  {
-    id: "2",
-    title: "Module 2",
-  },
-];
+
 export const LessonForm = ({ initialData, moduleId, courseId }) => {
- ("lessonCourseId", courseId);
   const [isEditing, setIsEditing] = useState(false);
   const [lessons, setLessons] = useState(initialData);
   const router = useRouter();
@@ -62,7 +51,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
-  
     try {
       const formData = new FormData();
 
@@ -89,7 +77,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
   };
 
   const onReorder = async (updateData) => {
-    ({ updateData });
     try {
       setIsUpdating(true);
       await reOrderLesson(updateData);
@@ -103,26 +90,30 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
   };
 
   const onEdit = (id) => {
-    const foundLesson = lessons.find(lesson => lesson.id === id);
+    const foundLesson = lessons.find((lesson) => lesson.id === id);
     setLessonToEdit(foundLesson);
     setIsEditing(true);
   };
 
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
       {isUpdating && (
-        <div className="absolute h-full w-full bg-gray-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+        <div className="absolute right-0 top-0 flex h-full w-full items-center justify-center rounded-xl bg-[#0a0512]/60 backdrop-blur-sm">
+          <Loader2 className="h-6 w-6 animate-spin text-purple-400" />
         </div>
       )}
-      <div className="font-medium flex items-center justify-between">
-        Module Lessions
-        <Button variant="ghost" onClick={toggleCreating}>
+      <div className="flex items-center justify-between font-medium text-purple-100">
+        Module Lessons
+        <Button
+          variant="ghost"
+          onClick={toggleCreating}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
-              <PlusCircle className="h-4 w-4 mr-2" />
+              <PlusCircle className="mr-2 h-4 w-4" />
               Add a chapter
             </>
           )}
@@ -133,7 +124,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -144,6 +135,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
                     <Input
                       disabled={isSubmitting}
                       placeholder="e.g. 'Introduction to the course...'"
+                      className="border-purple-900/50 bg-[#0a0512] text-purple-100 placeholder:text-purple-300/40 focus-visible:ring-purple-600 focus-visible:ring-offset-0"
                       {...field}
                     />
                   </FormControl>
@@ -151,7 +143,11 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
                 </FormItem>
               )}
             />
-            <Button disabled={!isValid || isSubmitting} type="submit">
+            <Button
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              className="bg-purple-600 text-white hover:bg-purple-500"
+            >
               Create
             </Button>
           </form>
@@ -160,8 +156,8 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       {!isCreating && (
         <div
           className={cn(
-            "text-sm mt-2",
-            !lessons?.length && "text-slate-500 italic"
+            "mt-2 text-sm text-purple-200",
+            !lessons?.length && "italic text-purple-300/50"
           )}
         >
           {!lessons?.length && "No Lesson"}
@@ -173,11 +169,18 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
         </div>
       )}
       {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
+        <p className="mt-4 text-xs text-purple-300/50">
           Drag & Drop to reorder the lessons
         </p>
       )}
-      <LessonModal open={isEditing} setOpen={setIsEditing} courseId={courseId} moduleId={moduleId} lesson={lessonToEdit} onClose={()=>window.location.reload()}/>
+      <LessonModal
+        open={isEditing}
+        setOpen={setIsEditing}
+        courseId={courseId}
+        moduleId={moduleId}
+        lesson={lessonToEdit}
+        onClose={() => window.location.reload()}
+      />
     </div>
   );
 };

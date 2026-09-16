@@ -15,13 +15,20 @@ const lives = [
     time: "08:30 PM",
   },
 ];
+
 const LivesPage = async () => {
   return (
     <div className="p-6">
-      {/* <Link href="/teacher/create">
-        <Button>New Course</Button>
-      </Link> */}
-      <DataTable columns={columns} data={lives} />
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-purple-100">Lives</h1>
+        <p className="mt-1 text-sm text-purple-100/60">
+          Manage your upcoming and past live sessions
+        </p>
+      </div>
+
+      <div className="rounded-2xl border border-purple-900/40 bg-[#0f0720] p-4 sm:p-6">
+        <DataTable columns={columns} data={lives} />
+      </div>
     </div>
   );
 };

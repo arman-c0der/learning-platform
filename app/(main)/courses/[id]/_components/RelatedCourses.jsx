@@ -30,24 +30,35 @@ const courses = [
 const RelatedCourses = () => {
     const handleCourseClick = (isPublished) => {
         if (!isPublished) {
-            toast.error("This course is not published yet. Please check back later.");
+            toast.error(
+                "This course is not published yet. Please check back later."
+            );
             return;
         }
     };
 
     return (
-        <section className="">
-            <div className="container">
-                <SectionTitle className="mb-6">Related Courses</SectionTitle>
+        <section className="py-16 md:py-24">
+            <div className="container mx-auto px-6">
+                <div className="mb-10">
+                    <span className="mb-3 inline-block rounded-full border border-purple-800/50 bg-purple-950/40 px-3 py-1 text-xs font-medium uppercase tracking-wider text-purple-300">
+                        Keep Exploring
+                    </span>
+                    <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                        Related{" "}
+                        <span className="text-purple-400">Courses</span>
+                    </h2>
+                </div>
+
                 <Carousel
                     opts={{
                         align: "start",
                     }}
-                    className="max-2xl:w-[90%] w-full mx-auto"
+                    className="mx-auto w-full max-2xl:w-[90%]"
                 >
-                    <CarouselPrevious />
-                    <CarouselNext />
-                    <CarouselContent>
+                    <CarouselPrevious className="border-purple-800/50 bg-[#0f0720] text-purple-300 hover:bg-purple-950 hover:text-white" />
+                    <CarouselNext className="border-purple-800/50 bg-[#0f0720] text-purple-300 hover:bg-purple-950 hover:text-white" />
+                    <CarouselContent className="py-2">
                         {courses.map((course) => (
                             <CarouselItem
                                 key={course.id}
@@ -55,50 +66,60 @@ const RelatedCourses = () => {
                             >
                                 <div
                                     role="button"
-                                    onClick={() => handleCourseClick(course.isPublished)}
-                                    className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full cursor-pointer"
+                                    onClick={() =>
+                                        handleCourseClick(course.isPublished)
+                                    }
+                                    className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-purple-900/40 bg-[#0f0720] transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-[0_12px_36px_-10px_rgba(168,85,247,0.35)]"
                                 >
-                                    <div className="relative w-full aspect-video rounded-md overflow-hidden">
+                                    <div className="relative aspect-video w-full overflow-hidden">
                                         <Image
                                             src={course.thumbnail}
                                             alt={course.title}
-                                            className="object-cover"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                                             fill
                                         />
-                                    </div>
-                                    <div className="flex flex-col pt-2">
-                                        <div className="text-lg md:text-base font-medium group-hover:text-sky-700 line-clamp-2">
-                                            {course.title}
-                                        </div>
-                                        <p className="text-xs text-muted-foreground">
+                                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0f0720] via-transparent to-transparent opacity-80" />
+
+                                        <span className="absolute left-3 top-3 rounded-full border border-purple-700/50 bg-[#0a0512]/80 px-3 py-1 text-[11px] font-medium text-purple-300 backdrop-blur-sm">
                                             {course.category}
+                                        </span>
+
+                                        {!course.isPublished && (
+                                            <span className="absolute right-3 top-3 rounded-full border border-purple-700/50 bg-[#0a0512]/80 px-3 py-1 text-[11px] font-medium text-purple-300/70 backdrop-blur-sm">
+                                                Coming Soon
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-1 flex-col gap-2 p-4">
+                                        <h3 className="line-clamp-2 text-base font-semibold text-purple-100 transition-colors group-hover:text-white">
+                                            {course.title}
+                                        </h3>
+
+                                        <div className="flex items-center gap-1.5 text-xs text-purple-300/60">
+                                            <BookOpen className="h-3.5 w-3.5" />
+                                            <span>{course.chapters} Chapters</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-auto flex items-center justify-between border-t border-purple-900/40 px-4 py-3">
+                                        <p className="text-sm font-semibold text-purple-200">
+                                            {formatPrice(course.price)}
                                         </p>
-                                        <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
-                                            <div className="flex items-center gap-x-1 text-slate-500">
-                                                <div>
-                                                    <BookOpen className="w-4" />
-                                                </div>
-                                                <span>{course.chapters} Chapters</span>
-                                            </div>
-                                        </div>
 
-                                        <div className="flex items-center justify-between mt-4">
-                                            <p className="text-md md:text-sm font-medium text-slate-700">
-                                                {formatPrice(course.price)}
-                                            </p>
-
-                                            <Button
-                                                variant="ghost"
-                                                className="text-xs text-sky-700 h-7 gap-1"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleCourseClick(course.isPublished);
-                                                }}
-                                            >
-                                                Enroll
-                                                <ArrowRight className="w-3" />
-                                            </Button>
-                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            className="h-7 gap-1 text-xs text-purple-300 hover:bg-purple-950/60 hover:text-purple-100"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleCourseClick(
+                                                    course.isPublished
+                                                );
+                                            }}
+                                        >
+                                            Enroll
+                                            <ArrowRight className="w-3" />
+                                        </Button>
                                     </div>
                                 </div>
                             </CarouselItem>

@@ -16,9 +16,7 @@ export const ImageForm = ({ initialData, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  // Your course data uses "thumbnail"
   const imageUrl = initialData?.imageUrl || "";
-
 
   const toggleEdit = () => {
     setIsEditing((current) => !current);
@@ -41,10 +39,7 @@ export const ImageForm = ({ initialData, courseId }) => {
         const formData = new FormData();
 
         formData.append("files", uploadedFile);
-        formData.append(
-          "destination",
-          "./public/assets/images/courses"
-        );
+        formData.append("destination", "./public/assets/images/courses");
         formData.append("courseId", courseId);
 
         const response = await fetch("/api/upload", {
@@ -58,8 +53,6 @@ export const ImageForm = ({ initialData, courseId }) => {
           throw new Error(result?.message || "Image upload failed");
         }
 
-        ("Upload result:", result);
-
         toast.success("Course image uploaded successfully");
 
         setFile(null);
@@ -67,7 +60,7 @@ export const ImageForm = ({ initialData, courseId }) => {
 
         router.refresh();
       } catch (error) {
-        ("Image upload error:", error);
+        console.error("Image upload error:", error);
 
         toast.error(
           error?.message || "Something went wrong while uploading image"
@@ -81,9 +74,9 @@ export const ImageForm = ({ initialData, courseId }) => {
   }, [file, courseId, router]);
 
   return (
-    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+    <div className="mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
       {/* Header */}
-      <div className="flex items-center justify-between font-medium">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         <span>Course Image</span>
 
         <Button
@@ -91,6 +84,7 @@ export const ImageForm = ({ initialData, courseId }) => {
           variant="ghost"
           onClick={toggleEdit}
           disabled={isUploading}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
         >
           {isEditing ? (
             "Cancel"
@@ -112,11 +106,11 @@ export const ImageForm = ({ initialData, courseId }) => {
       {!isEditing && (
         <>
           {!imageUrl ? (
-            <div className="mt-2 flex h-60 items-center justify-center rounded-md bg-slate-200">
-              <ImageIcon className="h-10 w-10 text-blue-500" />
+            <div className="mt-2 flex h-60 items-center justify-center rounded-lg border border-purple-900/40 bg-[#0a0512]">
+              <ImageIcon className="h-10 w-10 text-purple-500" />
             </div>
           ) : (
-            <div className="relative mt-2 aspect-video overflow-hidden rounded-md">
+            <div className="relative mt-2 aspect-video overflow-hidden rounded-lg border border-purple-900/40">
               <Image
                 src={imageUrl}
                 alt="Course image"
@@ -134,18 +128,17 @@ export const ImageForm = ({ initialData, courseId }) => {
         <div className="mt-4">
           <UploadDropzone
             onUpload={(files) => {
-              ("Selected files:", files);
               setFile(files);
             }}
           />
 
           {isUploading && (
-            <p className="mt-3 text-sm text-muted-foreground">
+            <p className="mt-3 text-sm text-purple-300/60">
               Uploading image...
             </p>
           )}
 
-          <div className="mt-4 text-xs text-muted-foreground">
+          <div className="mt-4 text-xs text-purple-300/50">
             16:9 aspect ratio recommended.
           </div>
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./sidebar";
@@ -5,10 +7,10 @@ import Sidebar from "./sidebar";
 export const MobileSidebar = () => {
   return (
     <Sheet>
-      <SheetTrigger className="lg:hidden pr-4 hover:opacity-75  transition">
+      <SheetTrigger className="pr-4 text-purple-300 transition hover:opacity-75 lg:hidden">
         <Menu />
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 bg-white">
+      <SheetContent side="left" className="bg-[#0a0512] p-0 border-purple-950">
         <Sidebar />
       </SheetContent>
     </Sheet>

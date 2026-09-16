@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Grip, Pencil } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -14,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { CirclePlay } from "lucide-react";
 
 export const LessonList = ({ items, onReorder, onEdit }) => {
-  
   const [isMounted, setIsMounted] = useState(false);
   const [modules, setModules] = useState(items);
 
@@ -62,39 +56,40 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                 {(provided) => (
                   <div
                     className={cn(
-                      "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
+                      "mb-4 flex items-center gap-x-2 rounded-lg border border-purple-900/40 bg-[#0a0512] text-sm text-purple-200",
                       module.active &&
-                        "bg-sky-100 border-sky-200 text-sky-700"
+                        "border-purple-700/50 bg-purple-950/30 text-purple-100"
                     )}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                   >
                     <div
                       className={cn(
-                        "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
+                        "rounded-l-lg border-r border-r-purple-900/40 px-2 py-3 text-purple-400 transition hover:bg-purple-950/40",
                         module.active &&
-                          "border-r-sky-200 hover:bg-sky-200"
+                          "border-r-purple-700/50 hover:bg-purple-900/40"
                       )}
                       {...provided.dragHandleProps}
                     >
                       <Grip className="h-5 w-5" />
                     </div>
                     <div className="flex items-center gap-2">
-                      <CirclePlay size={18} />
+                      <CirclePlay size={18} className="text-purple-400" />
                       {module.title}
                     </div>
-                    <div className="ml-auto pr-2 flex items-center gap-x-2">
+                    <div className="ml-auto flex items-center gap-x-2 pr-2">
                       <Badge
                         className={cn(
-                          "bg-gray-500",
-                          module.active && "bg-emerald-600"
+                          "border border-purple-900/40 bg-purple-950/50 text-purple-100 hover:bg-purple-950/50",
+                          module.active &&
+                            "border-emerald-800/40 bg-emerald-950/40 text-purple-100 hover:bg-emerald-950/40"
                         )}
                       >
                         {module.active ? "Published" : "Draft"}
                       </Badge>
                       <Pencil
                         onClick={() => onEdit(module.id)}
-                        className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+                        className="h-4 w-4 cursor-pointer text-purple-300 transition hover:text-purple-100"
                       />
                     </div>
                   </div>

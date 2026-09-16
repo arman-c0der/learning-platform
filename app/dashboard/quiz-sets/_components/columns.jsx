@@ -19,12 +19,16 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("title")}</div>
+    ),
   },
   {
     accessorKey: "totalQuiz",
@@ -32,12 +36,16 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Total Quiz <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("totalQuiz")}</div>
+    ),
   },
   {
     accessorKey: "isPublished",
@@ -45,6 +53,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Published <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -55,7 +64,13 @@ export const columns = [
       const isPublished = row.getValue("isPublished") || false;
 
       return (
-        <Badge className={cn("bg-gray-500", isPublished && "bg-success")}>
+        <Badge
+          className={cn(
+            "border border-purple-900/40 bg-purple-950/50 text-purple-100 hover:bg-purple-950/50",
+            isPublished &&
+              "border-emerald-800/40 bg-emerald-950/40 text-purple-100 hover:bg-emerald-950/40"
+          )}
+        >
           {isPublished ? "Published" : "Unpublished"}
         </Badge>
       );
@@ -68,15 +83,21 @@ export const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0 text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
+            >
               <span className="sr-only">Open Menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            align="end"
+            className="w-48 bg-[#0f0720] border border-purple-950 text-purple-100"
+          >
             <Link href={`/dashboard/quiz-sets/${id}`}>
-              <DropdownMenuItem>
-                <Pencil className="h-4 w-4 mr-2" />
+              <DropdownMenuItem className="cursor-pointer hover:bg-purple-950 focus:bg-purple-950">
+                <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
             </Link>

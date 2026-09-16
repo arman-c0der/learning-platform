@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export const CourseActions = ({ courseId, isActive }) => {
-('courseid', courseId, 'isActive', isActive);
   const router = useRouter();
   const [action, setAction] = useState(null);
   const [published, setPublished] = useState(isActive);
@@ -22,7 +21,6 @@ export const CourseActions = ({ courseId, isActive }) => {
 
     try {
       switch (action) {
-
         case "change-active": {
           const activeState = await changeCoursePublishState(courseId);
           setPublished(!activeState);
@@ -31,9 +29,11 @@ export const CourseActions = ({ courseId, isActive }) => {
           break;
         }
 
-        case "delete":  {
+        case "delete": {
           if (published) {
-            toast.error("A published course can not be deleted. First unpublish it, then delete.")
+            toast.error(
+              "A published course can not be deleted. First unpublish it, then delete."
+            );
           } else {
             await deleteCourse(courseId);
             toast.success("The course has been deleted successfully");
@@ -43,12 +43,10 @@ export const CourseActions = ({ courseId, isActive }) => {
           break;
         }
 
-
         default: {
           throw new Error("Invalid Course Action");
         }
       }
-
     } catch (e) {
       toast.error(e.message);
     }
@@ -57,11 +55,23 @@ export const CourseActions = ({ courseId, isActive }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex items-center gap-x-2">
-        <Button variant="outline" size="sm" onClick={() => setAction("change-active")}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setAction("change-active")}
+          className="border-purple-800 bg-transparent text-purple-100 hover:bg-purple-950 hover:text-purple-100"
+        >
           {published ? "Unpublish" : "Publish"}
         </Button>
 
-        <Button type="submit" name="action" value="delete" size="sm" onClick={() => setAction("delete")}>
+        <Button
+          type="submit"
+          name="action"
+          value="delete"
+          size="sm"
+          onClick={() => setAction("delete")}
+          className="bg-red-950/60 text-red-300 border border-red-900/50 hover:bg-red-900/50 hover:text-red-200"
+        >
           <Trash className="h-4 w-4" />
         </Button>
       </div>

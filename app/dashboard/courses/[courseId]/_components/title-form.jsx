@@ -1,7 +1,6 @@
 "use client";
 
 import * as z from "zod";
-// import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -51,26 +50,32 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         Course title
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button
+          variant="ghost"
+          onClick={toggleEdit}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit Title
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+      {!isEditing && (
+        <p className="mt-2 text-sm text-purple-200">{initialData.title}</p>
+      )}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -81,6 +86,7 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
                     <Input
                       disabled={isSubmitting}
                       placeholder="e.g. 'Advanced web development'"
+                      className="border-purple-900/50 bg-[#0a0512] text-purple-100 placeholder:text-purple-300/40 focus-visible:ring-purple-600 focus-visible:ring-offset-0"
                       {...field}
                     />
                   </FormControl>
@@ -89,7 +95,11 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                className="bg-purple-600 text-white hover:bg-purple-500"
+              >
                 Save
               </Button>
             </div>

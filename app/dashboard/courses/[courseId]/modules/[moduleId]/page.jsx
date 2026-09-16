@@ -37,7 +37,7 @@ const Module = async ({ params}) => {
           <div className="w-full">
             <Link
               href={`/dashboard/courses/${courseId}`}
-              className="flex items-center text-sm hover:opacity-75 transition mb-6"
+              className="flex items-center text-sm hover:opacity-75 transition mb-6 text-white"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to course setup
@@ -52,14 +52,14 @@ const Module = async ({ params}) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={LayoutDashboard} />
-                <h2 className="text-xl">Customize Your module</h2>
+                <h2 className="text-xl text-white">Customize Your module</h2>
               </div>
               <ModuleTitleForm initialData={{title: module.title}} courseId={courseId} chapterId={moduleId} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={BookOpenCheck} />
-                <h2 className="text-xl">Module Lessons</h2>
+                <h2 className="text-xl text-white">Module Lessons</h2>
               </div>
               <LessonForm initialData={lessons} moduleId={moduleId} courseId={courseId}/>
             </div>

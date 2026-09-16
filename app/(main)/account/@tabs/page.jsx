@@ -11,9 +11,9 @@ async function Profile() {
 
 	return (
 		<>
-			<PersonalDetails userInfo={loggedInUser}/>
-			<div className="p-6 rounded-md shadow dark:shadow-gray-800 bg-white dark:bg-slate-900 mt-[30px]">
-				<div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
+			<PersonalDetails userInfo={loggedInUser} />
+			<div className="mt-[30px] rounded-2xl border border-purple-900/40 bg-[#0f0720] p-6 shadow-[0_8px_30px_-10px_rgba(168,85,247,0.15)]">
+				<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 					<ContactInfo />
 					<ChangePassword email={loggedInUser?.email} />
 				</div>

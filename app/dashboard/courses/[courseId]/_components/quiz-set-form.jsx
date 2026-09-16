@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,9 +44,7 @@ export const QuizSetForm = ({
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const foundMatch = options.find(
-    (o) => o.value === initialData?.quizSetId
-  );
+  const foundMatch = options.find((o) => o.value === initialData?.quizSetId);
 
   const toggleEdit = () => {
     setIsEditing((current) => !current);
@@ -77,16 +74,20 @@ export const QuizSetForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         Quiz Set
 
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button
+          variant="ghost"
+          onClick={toggleEdit}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit Quiz Set
             </>
           )}
@@ -96,8 +97,8 @@ export const QuizSetForm = ({
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData?.quizSetId && "text-slate-500 italic"
+            "mt-2 text-sm text-purple-200",
+            !initialData?.quizSetId && "italic text-purple-300/50"
           )}
         >
           {foundMatch ? (
@@ -112,7 +113,7 @@ export const QuizSetForm = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -120,10 +121,7 @@ export const QuizSetForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
-                      options={options}
-                      {...field}
-                    />
+                    <Combobox options={options} {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -135,6 +133,7 @@ export const QuizSetForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                className="bg-purple-600 text-white hover:bg-purple-500"
               >
                 Save
               </Button>
@@ -145,4 +144,3 @@ export const QuizSetForm = ({
     </div>
   );
 };
-

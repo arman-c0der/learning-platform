@@ -19,12 +19,16 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("title")}</div>
+    ),
   },
   {
     accessorKey: "date",
@@ -32,12 +36,16 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Date <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("date")}</div>
+    ),
   },
   {
     accessorKey: "time",
@@ -45,12 +53,16 @@ export const columns = [
       return (
         <Button
           variant="ghost"
+          className="text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Time <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="text-purple-100">{row.getValue("time")}</div>
+    ),
   },
   {
     id: "actions",
@@ -59,15 +71,21 @@ export const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0 text-purple-100 hover:bg-purple-950/40 hover:text-purple-100"
+            >
               <span className="sr-only">Open Menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            align="end"
+            className="w-48 bg-[#0f0720] border border-purple-950 text-purple-100"
+          >
             <Link href={`/dashboard/lives/${id}`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <Pencil className="h-4 w-4 mr-2" />
+              <DropdownMenuItem className="cursor-pointer hover:bg-purple-950 focus:bg-purple-950">
+                <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
             </Link>

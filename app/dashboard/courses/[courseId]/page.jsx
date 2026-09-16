@@ -63,7 +63,7 @@ const EditCourse = async ({params}) => {
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">Customize your course</h2>
+              <h2 className="text-xl text-white">Customize your course</h2>
             </div>
             <TitleForm
               initialData={{
@@ -81,7 +81,7 @@ const EditCourse = async ({params}) => {
             <div>
               <div className="flex items-center gap-x-2 mb-6">
                 <IconBadge icon={ListChecks} />
-                <h2 className="text-xl">Course Modules</h2>
+                <h2 className="text-xl text-white">Course Modules</h2>
               </div>
 
               <ModulesForm initialData={modules} courseId={courseId} />
@@ -89,7 +89,7 @@ const EditCourse = async ({params}) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={CircleDollarSign} />
-                <h2 className="text-xl">Sell you course</h2>
+                <h2 className="text-xl text-white">Sell you course</h2>
               </div>
               <PriceForm initialData={{price: course?.price}} courseId={courseId} />
             </div>

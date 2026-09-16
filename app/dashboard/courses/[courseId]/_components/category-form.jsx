@@ -24,11 +24,7 @@ const formSchema = z.object({
   value: z.string().min(1),
 });
 
-export const CategoryForm = ({
-  initialData,
-  courseId,
-  options
-}) => {
+export const CategoryForm = ({ initialData, courseId, options }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -45,9 +41,10 @@ export const CategoryForm = ({
 
   const onSubmit = async (values) => {
     try {
-      
-      const selectedCategory = options.find(option => option.value === values.value);
-      await updateCourse(courseId, {"category": selectedCategory.id})
+      const selectedCategory = options.find(
+        (option) => option.value === values.value
+      );
+      await updateCourse(courseId, { category: selectedCategory.id });
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -61,15 +58,19 @@ export const CategoryForm = ({
   );
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         Course Category
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button
+          variant="ghost"
+          onClick={toggleEdit}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit Category
             </>
           )}
@@ -78,19 +79,19 @@ export const CategoryForm = ({
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.value && "text-slate-500 italic"
+            "mt-2 text-sm text-purple-200",
+            !initialData.value && "italic text-purple-300/50"
           )}
         >
           {selectedOptions?.label || "No category"}
         </p>
       )}
-   
+
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -105,7 +106,11 @@ export const CategoryForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                className="bg-purple-600 text-white hover:bg-purple-500"
+              >
                 Save
               </Button>
             </div>

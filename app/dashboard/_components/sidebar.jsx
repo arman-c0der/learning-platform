@@ -4,13 +4,13 @@ import Link from "next/link";
 
 const Sidebar = () => {
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
-      <div className="p-6">
+    <div className="flex h-full flex-col overflow-y-auto border-r border-purple-950 bg-[#0a0512] shadow-lg shadow-black/40">
+      <div className="border-b border-purple-950 p-6">
         <Link href="/">
           <Logo />
         </Link>
       </div>
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col py-2">
         <SidebarRoutes />
       </div>
     </div>

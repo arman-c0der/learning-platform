@@ -5,58 +5,72 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 import { getCourseDetailsByInstructor } from "@/queries/courses";
 
-const CourseInstructor = async ({course}) => {
-    ('course', course)
+const CourseInstructor = async ({ course }) => {
     const instructor = course?.instructor;
 
-    const fullName = `${instructor?.firstName}  ${instructor?.lastName}`;
-    const courseDetailsByInstructor = await getCourseDetailsByInstructor(instructor.id);
+    const fullName = `${instructor?.firstName} ${instructor?.lastName}`;
+    const courseDetailsByInstructor = await getCourseDetailsByInstructor(
+        instructor.id
+    );
 
-   
-
+    const stats = [
+        {
+            icon: Presentation,
+            label: `${courseDetailsByInstructor?.courses} Course(s)`,
+        },
+        {
+            icon: UsersRound,
+            label: `${courseDetailsByInstructor?.enrollments} Student Learned`,
+        },
+        {
+            icon: MessageSquare,
+            label: `${courseDetailsByInstructor?.reviews} Reviews`,
+        },
+        {
+            icon: Star,
+            label: `${courseDetailsByInstructor?.ratings} Average Rating`,
+        },
+    ];
 
     return (
-        <div className="bg-gray-50 rounded-md p-8">
-            <div className="md:flex md:gap-x-5 mb-8">
-                <div className="h-[310px] w-[270px] max-w-full  flex-none rounded mb-5 md:mb-0">
+        <div className="rounded-xl border border-purple-900/40 bg-[#0a0512] p-6 sm:p-8">
+            <div className="mb-8 md:flex md:gap-x-8">
+                <div className="mb-5 h-[280px] w-[240px] max-w-full flex-none overflow-hidden rounded-xl border border-purple-900/40 md:mb-0">
                     <Image
                         src={instructor?.profilePicture}
                         alt={fullName}
-                        className="w-full h-full object-cover rounded"
-                        width={270}
-                        height={310}
+                        className="h-full w-full object-cover"
+                        width={240}
+                        height={280}
                     />
                 </div>
+
                 <div className="flex-1">
-                    <div className="max-w-[300px]">
-                        <h4 className="text-[34px] font-bold leading-[51px]">
+                    <div className="max-w-[320px]">
+                        <h4 className="text-2xl font-bold leading-tight text-white sm:text-[32px] sm:leading-[1.2]">
                             {fullName}
                         </h4>
-                        <div className="text-gray-600 font-medium mb-6 ">
+                        <div className="mb-6 mt-1 font-medium text-purple-400">
                             {instructor?.designation}
                         </div>
-                        <ul className="list space-y-4">
-                            <li className="flex items-center space-x-3">
-                                <Presentation className="text-gray-600" />
-                                <div>{courseDetailsByInstructor?.courses} Course(s)</div>
-                            </li>
-                            <li className="flex space-x-3">
-                                <UsersRound className="text-gray-600" />
-                                <div>{courseDetailsByInstructor?.enrollments} Student Learned</div>
-                            </li>
-                            <li className="flex space-x-3">
-                                <MessageSquare className="text-gray-600" />
-                                <div>{courseDetailsByInstructor?.reviews} Reviews</div>
-                            </li>
-                            <li className="flex space-x-3">
-                                <Star className="text-gray-600" />
-                                <div>{courseDetailsByInstructor?.ratings} Average Rating</div>
-                            </li>
+                        <ul className="space-y-4">
+                            {stats.map(({ icon: Icon, label }, index) => (
+                                <li
+                                    key={index}
+                                    className="flex items-center gap-3 text-sm text-purple-200"
+                                >
+                                    <div className="flex-none rounded-full bg-purple-950/60 p-1.5 text-purple-400">
+                                        <Icon className="h-4 w-4" />
+                                    </div>
+                                    <div>{label}</div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
             </div>
-            <p className="text-gray-600">
+
+            <p className="border-t border-purple-900/40 pt-6 leading-relaxed text-purple-300/70">
                 {instructor?.bio}
             </p>
         </div>

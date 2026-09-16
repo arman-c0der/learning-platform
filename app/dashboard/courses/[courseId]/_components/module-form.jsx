@@ -47,7 +47,6 @@ export const ModulesForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
-
       const formData = new FormData();
       formData.append("title", values?.title);
       formData.append("slug", getSlug(values?.title));
@@ -72,9 +71,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   const onReorder = async (updateData) => {
-    ({ updateData });
     try {
-
       reOrderModules(updateData);
       setIsUpdating(true);
 
@@ -92,20 +89,24 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 rounded-xl border border-purple-900/40 bg-[#0f0720] p-4">
       {isUpdating && (
-        <div className="absolute h-full w-full bg-gray-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+        <div className="absolute right-0 top-0 flex h-full w-full items-center justify-center rounded-xl bg-[#0a0512]/60 backdrop-blur-sm">
+          <Loader2 className="h-6 w-6 animate-spin text-purple-400" />
         </div>
       )}
-      <div className="font-medium flex items-center justify-between">
+      <div className="flex items-center justify-between font-medium text-purple-100">
         Course Modules
-        <Button variant="ghost" onClick={toggleCreating}>
+        <Button
+          variant="ghost"
+          onClick={toggleCreating}
+          className="text-purple-300 hover:bg-purple-950/40 hover:text-purple-100"
+        >
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
-              <PlusCircle className="h-4 w-4 mr-2" />
+              <PlusCircle className="mr-2 h-4 w-4" />
               Add a module
             </>
           )}
@@ -116,7 +117,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -127,6 +128,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
                     <Input
                       disabled={isSubmitting}
                       placeholder="e.g. 'Introduction to the course...'"
+                      className="border-purple-900/50 bg-[#0a0512] text-purple-100 placeholder:text-purple-300/40 focus-visible:ring-purple-600 focus-visible:ring-offset-0"
                       {...field}
                     />
                   </FormControl>
@@ -134,7 +136,11 @@ export const ModulesForm = ({ initialData, courseId }) => {
                 </FormItem>
               )}
             />
-            <Button disabled={!isValid || isSubmitting} type="submit">
+            <Button
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              className="bg-purple-600 text-white hover:bg-purple-500"
+            >
               Create
             </Button>
           </form>
@@ -143,8 +149,8 @@ export const ModulesForm = ({ initialData, courseId }) => {
       {!isCreating && (
         <div
           className={cn(
-            "text-sm mt-2",
-            !modules?.length && "text-slate-500 italic"
+            "mt-2 text-sm text-purple-200",
+            !modules?.length && "italic text-purple-300/50"
           )}
         >
           {!modules?.length && "No module"}
@@ -156,7 +162,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
         </div>
       )}
       {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
+        <p className="mt-4 text-xs text-purple-300/50">
           Drag & Drop to reorder the modules
         </p>
       )}

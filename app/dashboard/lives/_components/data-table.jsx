@@ -1,14 +1,11 @@
 "use client";
 import * as React from "react";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
-  SortingState,
   getSortedRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
@@ -53,23 +50,26 @@ export function DataTable({ columns, data }) {
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm border-purple-900/50 bg-[#0a0512] text-purple-100 placeholder:text-purple-100/40 focus-visible:ring-purple-600 focus-visible:ring-offset-0"
         />
         <Link href="/dashboard/lives/add">
-          <Button>
-            <PlusCircle className="h-4 w-4 mr-2" />
+          <Button className="bg-purple-600 text-purple-100 hover:bg-purple-500">
+            <PlusCircle className="mr-2 h-4 w-4" />
             New Live
           </Button>
         </Link>
       </div>
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-xl border border-purple-900/40">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="border-purple-900/40 bg-purple-950/20 hover:bg-purple-950/20"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-purple-100">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -88,9 +88,10 @@ export function DataTable({ columns, data }) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="border-purple-900/40 hover:bg-purple-950/30 data-[state=selected]:bg-purple-950/40"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-purple-100">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -100,10 +101,10 @@ export function DataTable({ columns, data }) {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow className="border-purple-900/40 hover:bg-transparent">
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-purple-100/60"
                 >
                   No results.
                 </TableCell>
@@ -118,6 +119,7 @@ export function DataTable({ columns, data }) {
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
+          className="border-purple-800 bg-transparent text-purple-100 hover:bg-purple-950 hover:text-purple-100"
         >
           Previous
         </Button>
@@ -126,6 +128,7 @@ export function DataTable({ columns, data }) {
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          className="border-purple-800 bg-transparent text-purple-100 hover:bg-purple-950 hover:text-purple-100"
         >
           Next
         </Button>
