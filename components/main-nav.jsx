@@ -102,7 +102,7 @@ export function MainNav({ items, children }) {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
                                     align="end"
-                                    className="w-56 mt-4 bg-[#0f0720] border border-purple-950 text-purple-300"
+                                    className="w-56 mt-4l bg-[#0f0720] border border-purple-950 text-purple-300"
                                 >
                                     <DropdownMenuItem className="cursor-pointer hover:bg-purple-950 focus:bg-purple-950">
                                         <Link href="/register/student">
@@ -111,7 +111,7 @@ export function MainNav({ items, children }) {
                                     </DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer hover:bg-purple-950 focus:bg-purple-950">
                                         <Link href="/register/instructor">
-                                            Instructor
+                                            Instructor 
                                         </Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>

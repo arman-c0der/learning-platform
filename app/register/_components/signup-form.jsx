@@ -50,12 +50,10 @@ export function SignupForm({ role }) {
         }),
       });
 
-      console.log(response.url);
-      console.log(response.status);
-      console.log(await response.text());
+      
 
       if (response.ok) {
-        console.log("User has been created");
+       
         router.push("/login");
       }
     } catch (e) {

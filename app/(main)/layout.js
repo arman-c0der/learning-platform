@@ -16,7 +16,7 @@ const navLinks = [
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="flex min-h-screen flex-col bg-[#0a0512]">
+    <div className="flex min-h-screen flex-col bg-[#0a0512] ">
       <header className="z-40 bg-[#0a0512]/80 backdrop-blur-md fixed top-0 left-0 right-0 border-b border-purple-950">
         <SessionProvider>
           <div className="container flex h-16 items-center justify-between">

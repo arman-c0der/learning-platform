@@ -7,9 +7,10 @@ import { stripe } from "@/lib/stripe";
 import {getCourseDetails} from "@/queries/courses";
 
 export async function createCheckoutSession(data) {
+    
     const ui_mode = "hosted_page";
     const headersList = await headers();
-    const origin = headersList.get("origin");
+    const origin = headersList.get("origin") || `https://${headersList.get("host")}`;
    const courseId = data.get("courseId");
 
    const course = await getCourseDetails(courseId);
