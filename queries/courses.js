@@ -30,6 +30,7 @@ export async function getCourseList() {
 }
 
 export async function getCourseDetails(id) {
+      await dbConnect();
     const course = await Course.findById(id)
     .populate({
         path: "category",
@@ -64,6 +65,7 @@ export async function getCourseDetails(id) {
 }
 
 export async function getCourseDetailsByInstructor(instructorId, expand) {
+     await dbConnect(); 
     const publishedCourses = await Course.find({instructor: instructorId, active:true}).lean();
 
     const enrollments = await Promise.all(
@@ -124,7 +126,8 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
 }
 
 export async function create(courseData) {
-    ("courseData:", courseData);
+    await dbConnect();
+  
     try{
         const course =  await Course.create(courseData);
         return JSON.parse(JSON.stringify(course));
