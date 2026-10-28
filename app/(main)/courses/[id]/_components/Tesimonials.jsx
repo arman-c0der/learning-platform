@@ -55,7 +55,7 @@ const Testimonials = ({ testimonials }) => {
                                                 alt="profile picture"
                                                 src={
                                                     testimonial?.user
-                                                        ?.profilePicture ||
+                                                        ?.profile_picture ||
                                                     "/images/default-avatar.png"
                                                 }
                                                 width="48"
