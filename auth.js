@@ -51,6 +51,7 @@ export const {
     signOut,
     handlers: { GET, POST },
 } = NextAuth({
+     trustHost: true,
     ...authConfig,
     providers: [
    CredentialsProvider({
