@@ -4,8 +4,10 @@ import mongoose from "mongoose";
 import { replaceMongoIdInObject } from "@/lib/convertData";
 import { Module } from "@/model/module.model";
 import { getCourseDetails } from "./courses";
+import { dbConnect } from "@/service/mongo";
 
 export async function getAReport(filter) {
+    await dbConnect();
     try {
         const report = await Report.findOne(filter)
             .populate({
@@ -20,23 +22,31 @@ export async function getAReport(filter) {
 }
 
 export async function createAssessmentReport(data) {
-    (data);
+    await dbConnect();
     try {
-      let report = await Report.findOne({course: data.courseId, student: data.userId});
-      if (!report) {
-        report = await Report.create({course: data.courseId, student: data.userId, quizAssessment: data.quizAssessment});
-      } else {
-        if (!report.quizAssessment) {
-          report.quizAssessment = data.quizAssessment;
-          report.save();
+        let report = await Report.findOne({
+            course: data.courseId,
+            student: data.userId,
+        });
+        if (!report) {
+            report = await Report.create({
+                course: data.courseId,
+                student: data.userId,
+                quizAssessment: data.quizAssessment,
+            });
+        } else {
+            if (!report.quizAssessment) {
+                report.quizAssessment = data.quizAssessment;
+                await report.save();
+            }
         }
-      }
-    } catch(error) {
-      throw new Error(error);
+    } catch (error) {
+        throw new Error(error);
     }
-  }
+}
 
 export async function createWatchReport(data) {
+    await dbConnect();
     try {
         let report = await Report.findOne({
             course: data.courseId,
@@ -58,6 +68,7 @@ export async function createWatchReport(data) {
                 new mongoose.Types.ObjectId(data.lessonId)
             );
         }
+
         const module = await Module.findById(data.moduleId);
         const lessonIdsToCheck = module.lessonIds;
         const completedLessonsIds = report.totalCompletedLessons;
@@ -77,24 +88,19 @@ export async function createWatchReport(data) {
             }
         }
 
-        // Check if the course has completed
-        // If so, add the completion time.
+        // কোর্স শেষ হয়েছে কিনা দেখুন
         const course = await getCourseDetails(data.courseId);
-        (course);
         const modulesInCourse = course?.modules;
         const moduleCount = modulesInCourse?.length ?? 0;
 
         const completedModule = report.totalCompletedModules;
         const completedModuleCount = completedModule?.length ?? 0;
 
-        (moduleCount, completedModuleCount);
-
         if (completedModuleCount >= 1 && completedModuleCount === moduleCount) {
-            ("Course completed");
             report.completion_date = Date.now();
         }
 
-        report.save();
+        await report.save();
     } catch (error) {
         throw new Error(error);
     }
