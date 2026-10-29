@@ -38,8 +38,9 @@ const userSchema = new Schema({
     type: String,
 },
     profilePicture: {
-        required: true,
+        required: false,
         type: String,
+         default: ""
     },
     designation: {
         required: false,

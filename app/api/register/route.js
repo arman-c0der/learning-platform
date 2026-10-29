@@ -1,53 +1,40 @@
 import { User } from "@/model/user-model";
 import { dbConnect } from "@/service/mongo";
-import mongoose from "mongoose";
-import { NextRequest, NextResponse } from "next/server";
-
+import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
-export async function GET() {
-  ("GET HIT");
-  return Response.json({ ok: true });
-}
 export const POST = async (request) => {
-    ("REGISTER API HIT");
-    const { firstName, lastName, email, password, userRole } = await request.json();
-
-
-
-    await dbConnect();
-
-      ("Connected DB:", mongoose.connection.name);
-
-    const hashedPassword = await bcrypt.hash(password, 5);
-
-    const newUser = {
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-        role: userRole
-    }
-
-    
-
     try {
-    ("Before create");
+        const { firstName, lastName, email, password, userRole } =
+            await request.json();
 
-    const user = await User.create(newUser);
+        if (!firstName || !email || !password || !userRole) {
+            return new NextResponse("Missing required fields", { status: 400 });
+        }
 
-    ("After create");
-    (user);
+        await dbConnect();
 
-    return new NextResponse("User has been created", {
-        status: 201,
-    });
-} catch (error) {
-    ("Catch block");
-    (error);
+        const normalizedEmail = email.toLowerCase();
 
-    return new NextResponse(error.message, {
-        status: 500,
-    });
-}
-}
+        const existing = await User.findOne({ email: normalizedEmail });
+        if (existing) {
+            return new NextResponse("Email already registered", { status: 409 });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        await User.create({
+            firstName,
+            lastName: lastName || "",
+            email: normalizedEmail,
+            password: hashedPassword,
+            role: userRole,
+            profilePicture: "",
+        });
+
+        return new NextResponse("User has been created", { status: 201 });
+    } catch (error) {
+      
+        return new NextResponse(error.message, { status: 500 });
+    }
+};
