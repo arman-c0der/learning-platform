@@ -46,7 +46,7 @@ const Success = async ({ searchParams }) => {
   
 
     // Cutomer info
-    const customerName = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
+    const studentName = `${loggedInUser?.first_Name} ${loggedInUser?.last_Name}`;
     const customerEmail = loggedInUser?.email;
     const productName = course?.title;
    
@@ -73,12 +73,12 @@ const Success = async ({ searchParams }) => {
           {
             to: instructorEmail,
             subject: `New Enrollment for ${productName}.`,
-            message: `Congratulations, ${instructorName}. A new student, ${customerName} has enrolled to your course ${productName} just now. Please check the instructor dashboard and give a high-five to your new student.`,
+            message: `Congratulations, ${instructorName}. A new student, ${studentName} has enrolled to your course ${productName} just now. Please check the instructor dashboard and give a high-five to your new student.`,
           },
           {
             to: customerEmail,
             subject: `Enrollment Success for ${productName}`,
-            message: `Hey ${customerName} You have successfully enrolled for the course ${productName}`,
+            message: `Hey ${studentName} You have successfully enrolled for the course ${productName}`,
           }
         ];
 
@@ -92,15 +92,15 @@ const Success = async ({ searchParams }) => {
                 {paymentStatus === "succeeded" ? (
                     <>
                         <CircleCheck className="w-32 h-32 bg-success rounded-full p-0 text-white" />
-                        <h1 className="text-xl md:text-2xl lg:text-3xl">
-                            Congratulations, <strong>{customerName}</strong>! Your Enrollment was Successful for <strong>{productName}</strong>
+                        <h1 className="text-xl text-white md:text-2xl lg:text-3xl">
+                            Congratulations, <strong>{studentName}</strong>! Your Enrollment was Successful for <strong>{productName}</strong>
                         </h1>
                     </>
                 ) : (
                     <>
                        <CircleX className="w-32 h-32 bg-destructive rounded-full p-0 text-white" />
                         <h1 className="text-xl md:text-2xl lg:text-3xl">
-                            Sorry, <strong>{customerName}</strong>! Your payment for <strong>{productName}</strong> could not be completed.
+                            Sorry, <strong>{studentName}</strong>! Your payment for <strong>{productName}</strong> could not be completed.
                         </h1>
                         <p className="text-muted-foreground">
                             Please try again, or contact support if the amount was deducted from your account.

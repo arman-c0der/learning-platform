@@ -4,46 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { User } from "./model/user-model";
 import bcrypt from "bcryptjs";
-
-async function refreshAccessToken(token) {
-    try {
-        const url =
-            "https://oauth2.googleapis.com/token?" +
-            new URLSearchParams({
-                client_id: process.env.GOOGLE_CLIENT_ID,
-                client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                grant_type: "refresh_token",
-                refresh_token: token.refreshToken,
-            });
-
-            const response = await fetch(url, {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              },
-              method: 'POST'
-            })
-
-            const refreshedTokens = await response.json();
-
-            if(!response.ok) {
-              throw refreshedTokens;
-            }
-
-            return {
-              ...token,
-              accessToken: refreshedTokens?.access_token,
-              accessTokenExpires: Date.now() + refreshedTokens?.expires_in * 1000,
-              refreshToken: refreshedTokens?.refresh_token,
-            }
-    } catch (error) {
-        (error);
-
-        return {
-          ...token,
-          error: "RefreshAccessTokenError"
-        }
-    }
-}
+import { dbConnect } from "@/service/mongo";
 
 export const {
     auth,
@@ -51,48 +12,40 @@ export const {
     signOut,
     handlers: { GET, POST },
 } = NextAuth({
-     trustHost: true,
     ...authConfig,
+    trustHost: true,
+    session: { strategy: "jwt" },
     providers: [
-   CredentialsProvider({
-    async authorize(credentials) {
-        if (credentials == null) return null;
+        CredentialsProvider({
+            async authorize(credentials) {
+                if (credentials == null) return null;
 
-        try {
-            const user = await User.findOne({
-                email: credentials?.email,
-            });
+                await dbConnect();
+                const user = await User.findOne({
+                    email: credentials.email?.toLowerCase(),
+                });
 
-            if (user) {
+                if (!user) throw new Error("User not found");
+                if (!user.password) {
+                    throw new Error("Please sign in with Google");
+                }
+
                 const isMatch = await bcrypt.compare(
                     credentials.password,
                     user.password
                 );
+                if (!isMatch) throw new Error("Check your password");
 
-                if (isMatch) {
-                    // ✅ শুধু প্রয়োজনীয়, plain, serializable ডেটা রিটার্ন করুন
-                    return {
-                        id: user._id.toString(),
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        role: user.role,
-                        profilePicture: user.profilePicture,
-                    };
-                } else {
-                    ("password mismatch");
-                    throw new Error("Check your password");
-                }
-            } else {
-                ("User not found");
-                throw new Error("User not found");
-            }
-        } catch (err) {
-            (err);
-            throw new Error(err);
-        }
-    },
-}),
+                return {
+                    id: user._id.toString(),
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    role: user.role,
+                    profilePicture: user.profilePicture,
+                };
+            },
+        }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -105,39 +58,58 @@ export const {
             },
         }),
     ],
-    //  callbacks: {
-    //     async jwt({ token, user, account }) {
-    //       (`JWT token: ${JSON.stringify(token)}`);
-    //       (`JWT Account: ${JSON.stringify(account)}`);
+    callbacks: {
+        ...authConfig.callbacks,
 
-    //         if (account && user) {
-    //             return {
-    //                 accessToken: account?.access_token,
-    //                 accessTokenExpires: Date.now() + account?.expires_in * 1000,
-    //                 refreshToken: account?.refresh_token,
-    //                 user,
-    //             };
-    //         }
+        async signIn({ user, account, profile }) {
+            if (account?.provider !== "google") return true;
+            if (!profile?.email_verified) return false;
 
-    //         (`Token Will Expire at ${new Date(token.accessTokenExpires)})`);
+            await dbConnect();
+            const email = user.email.toLowerCase();
+            const existing = await User.findOne({ email });
 
-    //         if (Date.now() < token?.accessTokenExpires) {
-    //             (`At ${new Date(Date.now())}, Using old access token`);
-    //             return token;
-    //         }
+            // আগে থেকে থাকলে (যেমন instructor) কিছুই বদলাবে না
+            if (!existing) {
+                await User.create({
+                    firstName: profile.given_name || user.name || "User",
+                    lastName: profile.family_name || "",
+                    email,
+                    role: "student",
+                    profilePicture: user.image || "",
+                });
+            }
+            return true;
+        },
 
-    //         (`Token Expired at ${new Date(Date.now())}`)
-    //         return refreshAccessToken(token);
-    //     },
+        async jwt({ token, user }) {
+            // শুধু লগইনের মুহূর্তে ডাটাবেস থেকে আসল তথ্য আনা হয়
+            if (user) {
+                await dbConnect();
+                const dbUser = await User.findOne({
+                    email: user.email.toLowerCase(),
+                })
+                    .select("-password")
+                    .lean();
 
-    //     async session({ session, token }) {
+                if (dbUser) {
+                    token.id = dbUser._id.toString();
+                    token.role = dbUser.role;
+                    token.firstName = dbUser.firstName;
+                    token.lastName = dbUser.lastName;
+                    token.profilePicture = dbUser.profilePicture;
+                }
+            }
+            return token;
+        },
 
-    //       session.user = token?.user;
-    //       session.accessToken = token?.access_token;
-    //       session.error = token?.error
-
-    //       (`Returning Session ${JSON.stringify(session)}`)
-    //       return session;
-    //     },
-    // },
+        async session({ session, token }) {
+            session.user.id = token.id;
+            session.user.role = token.role;
+            session.user.firstName = token.firstName;
+            session.user.lastName = token.lastName;
+            session.user.profilePicture = token.profilePicture;
+            return session;
+        },
+    },
 });

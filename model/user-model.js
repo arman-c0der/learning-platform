@@ -33,6 +33,10 @@ const userSchema = new Schema({
         required: false,
         type: Object,
     },
+    password: {
+    required: false,   // Google ইউজারের পাসওয়ার্ড নেই
+    type: String,
+},
     profilePicture: {
         required: true,
         type: String,
